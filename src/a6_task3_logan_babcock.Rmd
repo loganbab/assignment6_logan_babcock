@@ -7,8 +7,8 @@ output: html_document
 # Introduction
 This report will compare total lengths in millimeters for female lizards of two species *Cnemidophorus uniparens*, the Desert Grassland lizard, and *Cnemidophorus tessalatus*, the Colorado Checkered lizard.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, messages = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, messages = FALSE, warning = FALSE )
 
 library(tidyverse)
 library(here)
@@ -48,3 +48,27 @@ ggplot(lizards_tidy, aes(x = Species, y = total_length,
 
 ```
 <center>**Figure 1:** Lengths of female lizards, faceted by species. Length is recorded in millimeters. Data spread is caputured by box plotes showing the means, and range of data. </center>
+
+/n
+
+<center>**Table 1:** Summary table showing the mean, standard deviation, median length, and count of female lizards by species. </center>
+```{r}
+# making summary table
+lengths_full <- na.omit(lizards_tidy)
+
+summary_lengths <- lengths_full %>% # making summary chart
+  group_by(Species) %>% # grouping by sex
+  summarize(
+    mean = mean(total_length), # summarizing mean, stand deviation, median, and counting sample size
+    sd = sd(total_length),
+    median = median(total_length),
+    sample_size = n()) %>% 
+  rename( "Standard Deviation" = "sd",
+         "Median Length (mm)" = "median", 
+         "Count" = "sample_size",
+         "Mean" = "mean")  # renaming columns
+
+kable(summary_lengths, digits = 2, align = "c") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+```
+
