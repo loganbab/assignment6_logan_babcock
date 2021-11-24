@@ -1,0 +1,11 @@
+---
+title: "a6_task2_logan_babcock"
+author: "Logan Babcock"
+date: "November 23, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
