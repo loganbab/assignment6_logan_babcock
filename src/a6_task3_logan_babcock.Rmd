@@ -5,7 +5,7 @@ date: "November 24, 2021"
 output: html_document
 ---
 # Introduction
-This report will compare total lengths in millimeters for female lizards of two species *Cnemidophorus uniparens*, the Desert Grassland lizard, and *Cnemidophorus tessalatus*, the Colorado Checkered lizard.
+This report will compare total lengths in millimeters for female lizards of two species *Cnemidophorus uniparens*, the Desert Grassland lizard, and *Cnemidophorus tessalatus*, the Colorado Checkered lizard. The data will analyzed using a Cohen's D test `cohen.d()`, to find the effect size of the difference in means. This wil let us assess if there is a significant difference in total length difference in mean total length between female lizards for the two species. 
 
 ```{r setup, include=FALSE, messages = FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = FALSE, messages = FALSE, warning = FALSE )
@@ -15,6 +15,7 @@ library(here)
 library(janitor)
 library(broom)
 library(kableExtra)
+library(effsize)
 
 # read in data
 
@@ -31,7 +32,7 @@ lizards_tidy <- lizards %>%
     spp == "CNTE" ~ "Colorado Checkered")) %>% # renaming variables 
   filter(sex == "F") # selecting females only
 ```
-
+### Visualizing Lizard Lengths
 ```{r}
 # visualizing data lengths
 ggplot(lizards_tidy, aes(x = Species, y = total_length,
@@ -49,14 +50,14 @@ ggplot(lizards_tidy, aes(x = Species, y = total_length,
 ```
 <center>**Figure 1:** Lengths of female lizards, faceted by species. Length is recorded in millimeters. Data spread is caputured by box plotes showing the means, and range of data. </center>
 
-/n
+### Summary Table and Statistics
 
 <center>**Table 1:** Summary table showing the mean, standard deviation, median length, and count of female lizards by species. </center>
 ```{r}
 # making summary table
-lengths_full <- na.omit(lizards_tidy)
+length_full <- na.omit(lizards_tidy)
 
-summary_lengths <- lengths_full %>% # making summary chart
+summary_lengths <- length_full %>% # making summary chart
   group_by(Species) %>% # grouping by sex
   summarize(
     mean = mean(total_length), # summarizing mean, stand deviation, median, and counting sample size
@@ -71,4 +72,39 @@ summary_lengths <- lengths_full %>% # making summary chart
 kable(summary_lengths, digits = 2, align = "c") %>% 
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
 ```
+```{r include = FALSE}
+# exploratory graphs
+ggplot(length_full, aes(sample = total_length)) + # exploratory qq plot faceted by species
+  geom_qq() +
+  facet_wrap(~Species) # looking at qq plots of each species
+
+ggplot(length_full, aes(sample = total_length)) + # exploratory qq plot with population considered together
+  geom_qq()
+
+
+# making vectors for species lengths
+
+colorado_length <- length_full %>% 
+  filter(Species == "Colorado Checkered") %>% # selecting colorado values
+  pull(total_length)
+
+desert_length <- length_full %>% 
+  filter(Species == "Desert Grassland") %>% 
+  pull(total_length)
+
+#exploratory ttest
+length_ttest <- t.test(colorado_length, desert_length)
+tidy_ttest <- tidy(length_ttest)
+```
+
+```{r}
+# cohens effect size
+length_cohen <- cohen.d(colorado_length, desert_length) # effect size
+
+```
+The effect size is large, with a Cohen's D of (Cohen's *d* = `r length_cohen$estimate`). The difference between the means is significant (two-sample t-test, t = `r round(tidy_ttest$statistic)`, p < 0.01). The actual difference in means is `r (summary_lengths$Mean [1]) - (summary_lengths$Mean [2])`. The large effect size and T-Test result means that we would reject the hypothesis that both species populations mean length's are the same
+
+**Data Citation:** Lightfoot, D. 2017. Lizard pitfall trap data (LTER-II, LTER-III) ver 36. Environmental Data Initiative. https://doi.org/10.6073/pasta/ff37b4cace16a9943575f3fd7067064e 
+
+
 
