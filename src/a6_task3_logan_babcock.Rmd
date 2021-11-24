@@ -1,0 +1,50 @@
+---
+title: "Assignment 6 Task 3"
+author: "Logan Babcock"
+date: "November 24, 2021"
+output: html_document
+---
+# Introduction
+This report will compare total lengths in millimeters for female lizards of two species *Cnemidophorus uniparens*, the Desert Grassland lizard, and *Cnemidophorus tessalatus*, the Colorado Checkered lizard.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+library(kableExtra)
+
+# read in data
+
+lizards <- read_csv(here("data", "lizards.csv"))
+```
+
+```{r}
+# tidying data and selecting variables we want
+lizards_tidy <- lizards %>% 
+  select("spp", "sex", "total_length") %>% # selecting columns
+  filter(spp %in% c("CNUN", "CNTE")) %>% # operator selects specific vlues from range)
+  mutate(Species = case_when( # reclassifying number values to political party 
+    spp == "CNUN" ~ "Desert Grassland",
+    spp == "CNTE" ~ "Colorado Checkered")) %>% # renaming variables 
+  filter(sex == "F") # selecting females only
+```
+
+```{r}
+# visualizing data lengths
+ggplot(lizards_tidy, aes(x = Species, y = total_length,
+               colour = Species,
+               shape = Species)) + 
+  geom_boxplot(outlier.shape = NA) + # adding a boxplot to show spread
+  geom_jitter() + 
+  labs(y = "Total Length (mm)", x = "Female Lizards") +
+  theme(axis.text.x = element_text(size = 7, hjust = 0.5), # aesthetic adjustments
+        axis.text.y = element_text(size = 7),
+        axis.title.x = element_text(hjust = 0.5, 
+                                    vjust = 0.5),
+        plot.caption = element_text(hjust = 0.9))
+
+```
+<center>**Figure 1:** Lengths of female lizards, faceted by species. Length is recorded in millimeters. Data spread is caputured by box plotes showing the means, and range of data. </center>
