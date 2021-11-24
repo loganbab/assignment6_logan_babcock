@@ -1,11 +1,70 @@
 ---
-title: "a6_task2_logan_babcock"
+title: "Assignment 6 Task 2"
 author: "Logan Babcock"
 date: "November 23, 2021"
 output: html_document
 ---
 
+# Introduction
+
+This report considers the survey data from the Environmental Data Initiative, which allows respondents to self-select political affiliation, and status as an environmentalist. The respondents can self select their party preference using a sliding scale, with 1-3 being conservative, and 5-7 are liberal, with the polar ends representing the stronger affiliations. This report will select respondents within these ranges, and run a Chi-Squared test `chisq.test()` to see if their response is related to if they identify as an environmentalist. 
+
+**Data citation:** Andrews Forest LTER Site and C. Batavia. 2019. Influences on charitable giving for conservation: Online survey data of 1,331 respondents across the US, August 2017 ver 3. Environmental Data Initiative. https://doi.org/10.6073/pasta/926e6270e324a1322a900da14d38b96c
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# read in packages 
+
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+
+# read in data 
+
+survey <- read_csv(here("data", "conservation_survey.csv"))
+
+```
+
+
+```{r}
+# filtering for the variables we want: POL_OR and ENV_ID
+survey_tidy <- survey %>% 
+  select(POL_OR, ENV_ID) %>% 
+  filter(POL_OR %in% c("1","2","3","5","6","7")) %>% # operator selects specific vlues from range)
+  mutate(party = case_when( # reclassifying number values to political party 
+    POL_OR == "1" ~ "Conservative",
+    POL_OR == "2" ~ "Conservative",
+    POL_OR == "3" ~ "Conservative",
+    POL_OR == "5" ~ "Liberal",
+    POL_OR == "6" ~ "Liberal",
+    POL_OR == "7" ~ "Liberal")) %>% 
+  mutate(env = case_when( # reclassifying env_id to anser yes, no, unsure
+    ENV_ID == "1" ~ "Yes",
+    ENV_ID == "2" ~ "No",
+    ENV_ID == "3" ~ "Unsure"))
+
+
+```
+
+```{r}
+# making table showing proportions of reponses
+tidy_counts <- survey_tidy %>% 
+  tabyl(party, env)
+
+# getting proportions and counts together
+proportions <- tidy_counts %>% 
+  janitor::adorn_percentages() %>% 
+  janitor::adorn_pct_formatting(digits = 2) %>% # updated sig figs
+  janitor::adorn_ns() # includes count
+
+# moving party to a column
+survey_ct <- tidy_counts %>%
+  column_to_rownames(var = "party") # separating the partyvariable into rows, not cell values
+
+# finalizing table 
+
 ```
 
