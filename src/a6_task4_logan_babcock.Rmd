@@ -3,10 +3,10 @@ title: "Assignment 6 Task 4: Mono Lake Data Visualization"
 author: "Logan Babcock"
 output: html_document
 ---
-## Mono Lake water level change data visulaization
+## Visualization of Mono Lake water level data from 1840 - 2016
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 library(tidyverse)
 library(paletteer)
@@ -24,40 +24,60 @@ mono_tidy <- clean_names(mono) %>%
 
 ```
 
-```{r}
+```{r echo = FALSE, message = FALSE, warning = FALSE, fig.align = "center"}
 # visualizing the data
 ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
-  geom_line(aes(color = lake_level, legend = NA)) +
-  scale_x_continuous("Year",c(1850:2015), breaks = breaks_extended(20)) +
-  geom_rect(aes(ymin= 6370, ymax= 6377, xmin=1850, xmax=2020), alpha = 0.0009, fill='red') +
-  theme(panel.grid.minor = element_blank()) +
-  theme(legend.title = element_blank(), legend.position = "none") +
-  labs(x = "Year", y = "Lake Level (Feet above Sea Level)", title = "Change in Water Level of Mono Lake") +
-  annotate("text", x = 1890, y = 6379, label = "Landbridge Elevation",
-           family = "serif", fontface = "italic", colour = "black", size = 3) +
-  annotate("text", x = 1890, y = 6362, label = "Lake Salinity increases to 120 g/L",
-           family = "serif", fontface = "italic", colour = "black", size = 3) +
-  annotate("text", x = 1890, y = 6353, label = "Lake Salinity increases to 150 g/L",
-           family = "serif", fontface = "italic", colour = "black", size = 3) +
-  geom_hline( aes(yintercept = 6377), linetype = "dashed", size = 0.25) +
+  geom_line(aes(color = lake_level, legend = NA)) + # making line graph with no legend, and color change
+  scale_x_continuous("Year",c(1850:2015), breaks = breaks_extended(20)) + # editing scale label 
+  theme(panel.grid.minor = element_blank()) + # no grid lines
+  theme(legend.title = element_blank(), legend.position = "none",  # axis labels and title font changes
+        plot.title = element_text(hjust = 0.5, family = "serif"), 
+        axis.text.x = element_text(family = "serif"), 
+        axis.text.y = element_text(family = "serif"), 
+        axis.title.x = element_text(family = "serif"), 
+        axis.title.y = element_text(family = "serif")) +
+  labs(x = "Year", y = "Lake Level (Feet above Sea Level)", # adding axis titles
+       title = "Change in Water Level of Mono Lake", family = "serif") +
+  annotate("text", x = 1890, y = 6379,  # landbridge eleveation annotation
+           label = "Landbridge Elevation", 
+           family = "serif", fontface = "italic", 
+           colour = "black", size = 3) +
+  annotate("text", x = 1890, y = 6362,  # salinity 1 annotaion
+           label = "Lake Salinity increases to 120 g/L",
+           family = "serif", fontface = "italic", 
+           colour = "black", size = 3) +
+  annotate("text", x = 1890, y = 6353, # salinity 2 annotation
+           label = "Lake Salinity increases to 150 g/L",
+           family = "serif", fontface = "italic", 
+           colour = "black", size = 3) +
+  geom_hline( aes(yintercept = 6377), linetype = "dashed", size = 0.25) + # horizontal lines for annotation
   geom_hline( aes(yintercept = 6360), linetype = "dashed", size = 0.25) +
   geom_hline( aes(yintercept = 6350), linetype = "dashed", size = 0.25) +
-  annotate("segment", x = 1950, xend = 1940, y = 6425, yend = 6418,
-           colour = "black", size = 0.25, arrow = arrow(length = unit(.25,"cm"))) +
-  annotate("text", x = 1975, y = 6427, label = "Diversion of Mono Lake for L.A. water supply begins",
-           family = "serif", colour = "black", size = 3) +
-  annotate("rect", xmin = 1850, xmax = 2020, ymin = 6345, ymax = 6377,
+  annotate("segment", x = 1950, xend = 1940, y = 6425, yend = 6418, # arrow for start of diversion 
+           colour = "black", size = 0.25, 
+           arrow = arrow(length = unit(.25,"cm"))) +
+  annotate("text", x = 1975, y = 6427, # diversion start annotation
+           label = "Diversion of Mono Lake for L.A. water supply begins",
+           family = "serif", 
+           colour = "black", size = 3) +
+  annotate("rect", xmin = 1850, xmax = 2020, ymin = 6345, ymax = 6377, # shaded area for salinity and landbridge
   alpha = .2) +
-  annotate("text", x = 1890, y = 6395, label = "Mandated water level of 6392 ft",
-           family = "serif", fontface = "italic", colour = "black", size = 3) +
-  annotate("text", x = 1992, y = 6389, label = "State Water Board mandates 
-           desirable lake level",
-           family = "serif", colour = "black", size = 3) +
+  annotate("text", x = 1890, y = 6395,  # mandated water level annotation
+           label = "Mandated Water Level ( 6392 ft )",
+           family = "serif", fontface = "italic", 
+           colour = "black", size = 3) + 
+  annotate("text", x = 1985, y = 6388, label = "Water Board enacts 
+           water level mandate",
+           family = "serif",fontface = "italic", 
+colour = "black", size = 3) + # end of water board annotation
  annotate("segment", x = 1988, xend = 1994, y = 6384, yend = 6378,
-           colour = "black", size = 0.25, arrow = arrow(length = unit(.25,"cm"))) +
-  geom_hline( aes(yintercept = 6392), linetype = "dashed", size = 0.25)
+           colour = "black", size = 0.25, 
+          arrow = arrow(length = unit(.25,"cm"))) + # water board arrow
+  geom_hline( aes(yintercept = 6392), linetype = "dashed", size = 0.25) # water mandadted level line
   
   
 
 ```
 <center> **Figure 1:** Change in water level of Mono Lake, monitored from 1850 - 2016, measured in feet above sea level. Grey shaded area denotes the water level that reveals landbridges under the surface, allowing predation to occur and changing the perimeter of the lake. The salinity levels included mark the levels that would significantly detriment the availibilty of brine shrimp that are a critial food source of birds that Mono Lake provides critial habitat for. The State Water Board's decision in 1994 (Known as Decision 1631) is a cornerstone for Mono Lake conservation, and is the water level that the lake management is now aiming to reach. This level was chosen for its ecosystem services including ideal salinity level, and includes a buffer for anticipated drought years.  </center>
+
+** Data Citation: ** “Mono Lake Levels 1850-Present.” Mono Lake Levels 1850-Present (Yearly), https://www.monobasinresearch.org/data/levelyearly.php.
