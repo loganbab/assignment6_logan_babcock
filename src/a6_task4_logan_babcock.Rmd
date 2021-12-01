@@ -1,0 +1,21 @@
+---
+title: "Assignment 6 Task 4: Mono Lake Data Visualization"
+author: "Logan Babcock"
+date: "11/30/2021"
+output: html_document
+---
+## Mono Lake water level change data visulaization
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(paletteer)
+library(janitor)
+library(here)
+
+# read in data
+mono <- read_csv(here("data","mono_lake_annual_levels.csv"))
+```
+
+
