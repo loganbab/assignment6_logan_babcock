@@ -1,11 +1,10 @@
 ---
 title: "Assignment 6 Task 3"
 author: "Logan Babcock"
-date: "November 24, 2021"
 output: html_document
 ---
-# Introduction
-This report will compare total lengths in millimeters for female lizards of two species *Cnemidophorus uniparens*, the Desert Grassland lizard, and *Cnemidophorus tessalatus*, the Colorado Checkered lizard. The data will analyzed using a Cohen's D test `cohen.d()`, to find the effect size of the difference in means. This wil let us assess if there is a significant difference in total length difference in mean total length between female lizards for the two species. 
+### Introduction
+This report will compare total lengths in millimeters for female lizards of two species: *Cnemidophorus uniparens*, the Desert Grassland lizard, and *Cnemidophorus tessalatus*, the Colorado Checkered lizard. The data will analyzed using a Cohen's D test `cohen.d()`, to find the effect size of the difference in means. This wil let us assess if there is a significant difference in total length difference in mean total length between female lizards for the two species. 
 
 ```{r setup, include=FALSE, messages = FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = FALSE, messages = FALSE, warning = FALSE )
@@ -33,7 +32,7 @@ lizards_tidy <- lizards %>%
   filter(sex == "F") # selecting females only
 ```
 ### Visualizing Lizard Lengths
-```{r}
+```{r fig.align = "center"}
 # visualizing data lengths
 ggplot(lizards_tidy, aes(x = Species, y = total_length,
                colour = Species,
@@ -102,7 +101,7 @@ tidy_ttest <- tidy(length_ttest)
 length_cohen <- cohen.d(colorado_length, desert_length) # effect size
 
 ```
-The effect size is large, with a Cohen's D of (Cohen's *d* = `r length_cohen$estimate`). The difference between the means is significant (two-sample t-test, t = `r round(tidy_ttest$statistic)`, p < 0.01). The actual difference in means is `r (summary_lengths$Mean [1]) - (summary_lengths$Mean [2])`. The large effect size and T-Test result means that we would reject the hypothesis that both species populations mean length's are the same
+The effect size is large, with a Cohen's D of (Cohen's *d* = `r round(length_cohen$estimate, digits = 3)`). The difference between the means is significant (two-sample t-test, t = `r round(tidy_ttest$statistic, digits = 3)`, p < 0.01). The actual difference in means is `r round((summary_lengths$Mean [1]) - (summary_lengths$Mean [2]), digits = 3)`. The large effect size and T-Test result means that we would reject the hypothesis that both species populations mean length's are the same
 
 **Data Citation:** Lightfoot, D. 2017. Lizard pitfall trap data (LTER-II, LTER-III) ver 36. Environmental Data Initiative. https://doi.org/10.6073/pasta/ff37b4cace16a9943575f3fd7067064e 
 
