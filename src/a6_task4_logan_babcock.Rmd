@@ -28,11 +28,14 @@ mono_tidy <- clean_names(mono) %>%
 ```{r}
 # visualizing the data
 ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
-  geom_line()+
+  geom_line(aes(color = lake_level)) +
+  scale_x_continuous(c(1850:2015), breaks = breaks_extended(25)) +
   geom_rect(aes(ymin= 6370, ymax= 6377, xmin=1850, xmax=2020), alpha = 0.009, fill='red') +
   theme_minimal() +
   labs(x = "Year", y = "Lake Level (Feet above Sea Level") +
- scale_x_continuous(c(1850:2015), breaks = breaks_extended(25)) 
+  annotate("text", x = 1940, y = 6378, label = "Landbridge Elevation",
+           family = "serif", fontface = "italic", colour = "black", size = 3)
+  
   
 
 ```
