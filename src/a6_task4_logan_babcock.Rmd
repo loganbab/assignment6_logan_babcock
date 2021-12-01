@@ -13,9 +13,27 @@ library(tidyverse)
 library(paletteer)
 library(janitor)
 library(here)
+library(scales)
 
 # read in data
-mono <- read_csv(here("data","mono_lake_annual_levels.csv"))
+mono <- read_csv(here("data","mono_lake_annual_levels.csv"), skip = 5)
+
+# cleaning up the data
+mono_tidy <- clean_names(mono) %>% 
+  rename(lake_level = lake_level_feet_above_sea_level)
+
 ```
 
+
+```{r}
+# visualizing the data
+ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
+  geom_line()+
+  geom_rect(aes(ymin= 6370, ymax= 6377, xmin=1850, xmax=2020), alpha = 0.009, fill='red') +
+  theme_minimal() +
+  labs(x = "Year", y = "Lake Level (Feet above Sea Level") +
+ scale_x_continuous(c(1850:2015), breaks = breaks_extended(25)) 
+  
+
+```
 
