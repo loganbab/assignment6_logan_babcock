@@ -1,13 +1,12 @@
 ---
 title: "Assignment 6 Task 2"
 author: "Logan Babcock"
-date: "November 23, 2021"
 output: html_document
 ---
 
 # Introduction
 
-This report considers the survey data from the Environmental Data Initiative, which allows respondents to self-select political affiliation, and status as an environmentalist. The respondents can self select their party preference using a sliding scale, with 1-3 being conservative, and 5-7 are liberal, with the polar ends representing the stronger affiliations. This report will select respondents within these ranges, and run a Chi-Squared test `chisq.test()` to see if their response is related to if they identify as an environmentalist. 
+This report considers the survey data from the Environmental Data Initiative, which allows respondents to self-select political affiliation, and status as an environmentalist. The respondents can self select their party preference using a sliding scale, with 1-3 being conservative, and 5-7 being liberal. The polar ends represent stronger party affiliations. This report will select respondents within the 1-3 and 5-7 ranges, and run a Chi-Squared test `chisq.test()` to see if their response is related to their identification as an environmentalist. 
 
 
 ```{r setup, include=FALSE, echo = FALSE, messages = FALSE, warning = FALSE}
@@ -47,7 +46,7 @@ survey_tidy <- survey %>%
 
 
 ```
-<center>**Table 1:** Porportions of responses for "Environmentalist" self-identificaition by political affiliation. </center>
+<center>**Table 1:** Porportions of responses for "Environmentalist" self-identificaition by political affiliation. "Yes" answers indicate survey respondent is an environmentalist, "No" indicates not an environmentalist. Numbers in parentheses are the number of responses for that category, while the percetage indicates the proportion of responses for that party affiliation.   </center>
 ```{r}
 # making table showing proportions of reponses
 tidy_counts <- survey_tidy %>% 

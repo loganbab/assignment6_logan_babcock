@@ -11,7 +11,6 @@
 
 <meta name="author" content="Logan Babcock" />
 
-<meta name="date" content="2021-11-23" />
 
 <title>Assignment 6 Task 2</title>
 
@@ -168,16 +167,15 @@ pre code {
 
 <h1 class="title toc-ignore">Assignment 6 Task 2</h1>
 <h4 class="author">Logan Babcock</h4>
-<h4 class="date">November 23, 2021</h4>
 
 </div>
 
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This report considers the survey data from the Environmental Data Initiative, which allows respondents to self-select political affiliation, and status as an environmentalist. The respondents can self select their party preference using a sliding scale, with 1-3 being conservative, and 5-7 are liberal, with the polar ends representing the stronger affiliations. This report will select respondents within these ranges, and run a Chi-Squared test <code>chisq.test()</code> to see if their response is related to if they identify as an environmentalist.</p>
+<p>This report considers the survey data from the Environmental Data Initiative, which allows respondents to self-select political affiliation, and status as an environmentalist. The respondents can self select their party preference using a sliding scale, with 1-3 being conservative, and 5-7 being liberal. The polar ends represent stronger party affiliations. This report will select respondents within the 1-3 and 5-7 ranges, and run a Chi-Squared test <code>chisq.test()</code> to see if their response is related to their identification as an environmentalist.</p>
 <center>
-<strong>Table 1:</strong> Porportions of responses for &quot;Environmentalist&quot; self-identificaition by political affiliation.
+<strong>Table 1:</strong> Porportions of responses for &quot;Environmentalist&quot; self-identificaition by political affiliation. &quot;Yes&quot; answers indicate survey respondent is an environmentalist, &quot;No&quot; indicates not an environmentalist. Numbers in parentheses are the number of responses for that category, while the percetage indicates the proportion of responses for that party affiliation.
 </center>
 <table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
