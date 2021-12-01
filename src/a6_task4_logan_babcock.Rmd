@@ -14,6 +14,7 @@ library(paletteer)
 library(janitor)
 library(here)
 library(scales)
+library(grid)
 
 # read in data
 mono <- read_csv(here("data","mono_lake_annual_levels.csv"), skip = 5)
@@ -28,13 +29,24 @@ mono_tidy <- clean_names(mono) %>%
 # visualizing the data
 ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
   geom_line(aes(color = lake_level)) +
-  scale_x_continuous(c(1850:2015), breaks = breaks_extended(25)) +
-  geom_rect(aes(ymin= 6370, ymax= 6377, xmin=1850, xmax=2020), alpha = 0.009, fill='red') +
+  scale_x_continuous("Year",c(1850:2015), breaks = breaks_extended(20)) +
+  geom_rect(aes(ymin= 6370, ymax= 6377, xmin=1850, xmax=2020), alpha = 0.0009, fill='red') +
   theme_minimal() +
   theme(legend.title = element_blank()) +
-  labs(x = "Year", y = "Lake Level (Feet above Sea Level", title = "Change in Water Level of Mono Lake") +
-  annotate("text", x = 1940, y = 6378, label = "Landbridge Elevation",
-           family = "serif", fontface = "italic", colour = "black", size = 3)
+  labs(x = "Year", y = "Lake Level (Feet above Sea Level)", title = "Change in Water Level of Mono Lake") +
+  annotate("text", x = 1940, y = 6379, label = "Landbridge Elevation",
+           family = "serif", fontface = "italic", colour = "black", size = 3) +
+  annotate("text", x = 1940, y = 6362, label = "Lake Salinity increases to 120 g/L",
+           family = "serif", fontface = "italic", colour = "black", size = 3) +
+  annotate("text", x = 1940, y = 6353, label = "Lake Salinity increases to 150 g/L",
+           family = "serif", fontface = "italic", colour = "black", size = 3) +
+  geom_hline( aes(yintercept = 6377), linetype = "dashed", size = 0.25) +
+  geom_hline( aes(yintercept = 6360), linetype = "dashed", size = 0.25) +
+  geom_hline( aes(yintercept = 6350), linetype = "dashed", size = 0.25) +
+  annotate("segment", x = 1950, xend = 1940, y = 6425, yend = 6418,
+           colour = "black", size = 0.25, arrow = arrow(length = unit(.25,"cm"))) +
+  annotate("text", x = 1975, y = 6427, label = "Diversion of Mono Lake for L.A. water supply begins",
+           family = "serif", fontface = "italic", colour = "black", size = 3) 
   
   
 
