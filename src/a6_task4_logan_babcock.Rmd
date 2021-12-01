@@ -1,7 +1,6 @@
 ---
 title: "Assignment 6 Task 4: Mono Lake Data Visualization"
 author: "Logan Babcock"
-date: "11/30/2021"
 output: html_document
 ---
 ## Mono Lake water level change data visulaization
@@ -28,17 +27,17 @@ mono_tidy <- clean_names(mono) %>%
 ```{r}
 # visualizing the data
 ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
-  geom_line(aes(color = lake_level)) +
+  geom_line(aes(color = lake_level, legend = NA)) +
   scale_x_continuous("Year",c(1850:2015), breaks = breaks_extended(20)) +
   geom_rect(aes(ymin= 6370, ymax= 6377, xmin=1850, xmax=2020), alpha = 0.0009, fill='red') +
   theme(panel.grid.minor = element_blank()) +
-  theme(legend.title = element_blank()) +
+  theme(legend.title = element_blank(), legend.position = "none") +
   labs(x = "Year", y = "Lake Level (Feet above Sea Level)", title = "Change in Water Level of Mono Lake") +
-  annotate("text", x = 1940, y = 6379, label = "Landbridge Elevation",
+  annotate("text", x = 1890, y = 6379, label = "Landbridge Elevation",
            family = "serif", fontface = "italic", colour = "black", size = 3) +
-  annotate("text", x = 1940, y = 6362, label = "Lake Salinity increases to 120 g/L",
+  annotate("text", x = 1890, y = 6362, label = "Lake Salinity increases to 120 g/L",
            family = "serif", fontface = "italic", colour = "black", size = 3) +
-  annotate("text", x = 1940, y = 6353, label = "Lake Salinity increases to 150 g/L",
+  annotate("text", x = 1890, y = 6353, label = "Lake Salinity increases to 150 g/L",
            family = "serif", fontface = "italic", colour = "black", size = 3) +
   geom_hline( aes(yintercept = 6377), linetype = "dashed", size = 0.25) +
   geom_hline( aes(yintercept = 6360), linetype = "dashed", size = 0.25) +
@@ -46,14 +45,19 @@ ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
   annotate("segment", x = 1950, xend = 1940, y = 6425, yend = 6418,
            colour = "black", size = 0.25, arrow = arrow(length = unit(.25,"cm"))) +
   annotate("text", x = 1975, y = 6427, label = "Diversion of Mono Lake for L.A. water supply begins",
-           family = "serif", fontface = "italic", colour = "black", size = 3) +
- annotate("segment", x = 1994, xend = 2020, y = 6392, yend = 6392, arrow = arrow(ends = "both", angle = 90, length = unit(.05,"cm"))) +
-  annotate("pointrange", x = 1994, y = 6392, ymin = 6392, ymax = 6392,
-  colour = "black", size = 0.5, shape = 23, fill = "black") +
+           family = "serif", colour = "black", size = 3) +
   annotate("rect", xmin = 1850, xmax = 2020, ymin = 6345, ymax = 6377,
-  alpha = .2)
+  alpha = .2) +
+  annotate("text", x = 1890, y = 6395, label = "Mandated water level of 6392 ft",
+           family = "serif", fontface = "italic", colour = "black", size = 3) +
+  annotate("text", x = 1992, y = 6389, label = "State Water Board mandates 
+           desirable lake level",
+           family = "serif", colour = "black", size = 3) +
+ annotate("segment", x = 1988, xend = 1994, y = 6384, yend = 6378,
+           colour = "black", size = 0.25, arrow = arrow(length = unit(.25,"cm"))) +
+  geom_hline( aes(yintercept = 6392), linetype = "dashed", size = 0.25)
   
   
 
 ```
-<center>**Figure 1:** Change in water level of Mono Lake, monitored from 1850 - 2016. Water level is in feet above sea level. A red highlight denotes the water level that reveals landbridges under the surface, allowing predation to occur and changing the perimeter of the lake. </center>
+<center> **Figure 1:** Change in water level of Mono Lake, monitored from 1850 - 2016, measured in feet above sea level. Grey shaded area denotes the water level that reveals landbridges under the surface, allowing predation to occur and changing the perimeter of the lake. The salinity levels included mark the levels that would significantly detriment the availibilty of brine shrimp that are a critial food source of birds that Mono Lake provides critial habitat for. The State Water Board's decision in 1994 (Known as Decision 1631) is a cornerstone for Mono Lake conservation, and is the water level that the lake management is now aiming to reach. This level was chosen for its ecosystem services including ideal salinity level, and includes a buffer for anticipated drought years.  </center>
