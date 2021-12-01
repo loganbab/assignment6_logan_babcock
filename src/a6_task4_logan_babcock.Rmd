@@ -24,7 +24,6 @@ mono_tidy <- clean_names(mono) %>%
 
 ```
 
-
 ```{r}
 # visualizing the data
 ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
@@ -32,11 +31,12 @@ ggplot(data = mono_tidy, aes(x = year, y = lake_level)) +
   scale_x_continuous(c(1850:2015), breaks = breaks_extended(25)) +
   geom_rect(aes(ymin= 6370, ymax= 6377, xmin=1850, xmax=2020), alpha = 0.009, fill='red') +
   theme_minimal() +
-  labs(x = "Year", y = "Lake Level (Feet above Sea Level") +
+  theme(legend.title = element_blank()) +
+  labs(x = "Year", y = "Lake Level (Feet above Sea Level", title = "Change in Water Level of Mono Lake") +
   annotate("text", x = 1940, y = 6378, label = "Landbridge Elevation",
            family = "serif", fontface = "italic", colour = "black", size = 3)
   
   
 
 ```
-
+<center>**Figure 1:** Change in water level of Mono Lake, monitored from 1850 - 2016. Water level is in feet above sea level. A red highlight denotes the water level that reveals landbridges under the surface, allowing predation to occur and changing the perimeter of the lake. </center>
